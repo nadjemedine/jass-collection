@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useLanguage } from '@/context/LanguageContext';
 import { useCart } from '@/context/CartContext';
-import { ShoppingCart, Menu, Search, X } from 'lucide-react';
+import { ShoppingCart, PanelLeft, Search, X } from 'lucide-react';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Input } from '@/components/ui/input';
 import SideDrawer from './SideDrawer';
@@ -45,12 +45,17 @@ export default function Header({ onSearch }: HeaderProps) {
       
       {/* Main Header */}
       <div className="bg-[#1A1A1A] h-14 md:h-20 max-w-7xl mx-auto flex items-center justify-between px-4 relative w-full">
-        {/* Search + Menu */}
-        <div className="flex items-center gap-3">
+        
+        {/* ===== MOBILE LAYOUT (md:hidden) ===== */}
+        {/* Mobile Left: Menu + Search */}
+        <div className="flex items-center gap-3 md:hidden">
           <Sheet open={drawerOpen} onOpenChange={setDrawerOpen}>
             <SheetTrigger asChild>
-              <button className="text-white hover:opacity-80 transition-opacity">
-                <Menu size={22} />
+              <button 
+                onMouseEnter={() => setDrawerOpen(true)}
+                className="text-white hover:opacity-80 transition-opacity"
+              >
+                <PanelLeft size={22} />
               </button>
             </SheetTrigger>
             <SheetContent side={dir === 'rtl' ? 'right' : 'left'} className="w-[85vw] sm:w-[350px] p-0">
@@ -65,35 +70,97 @@ export default function Header({ onSearch }: HeaderProps) {
           </button>
         </div>
 
-        {/* Logo */}
-        <a href="/" className="absolute left-1/2 -translate-x-1/2 group">
-          <h1 className="text-white font-bold text-base md:text-xl tracking-[0.15em] uppercase transition-all duration-300 group-hover:scale-102">
-            <span className="text-[#D4AF37]">J</span>ass <span className="text-[#D4AF37]">C</span>ollection
-          </h1>
-          <div className="h-[1px] w-0 group-hover:w-full bg-[#D4AF37] transition-all duration-500 mx-auto" />
+        {/* Mobile Center: Logo */}
+        <a href="/" className="absolute left-1/2 -translate-x-1/2 group md:hidden">
+          <img 
+            src="/logo.png" 
+            alt="Jass Collection" 
+            className="w-[120px] h-auto object-contain transition-transform duration-300 group-hover:scale-105 bg-transparent"
+          />
         </a>
 
-        {/* Cart Drawer */}
-        <Sheet open={cartOpen} onOpenChange={setCartOpen}>
-          <SheetTrigger asChild>
-            <button className="relative">
-              <ShoppingCart size={22} className="text-white" />
-              {totalItems > 0 && (
-                <span className="absolute -top-1.5 -right-1.5 bg-red-600 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
-                  {totalItems}
-                </span>
-              )}
+        {/* Mobile Right: Cart */}
+        <div className="md:hidden">
+          <Sheet open={cartOpen} onOpenChange={setCartOpen}>
+            <SheetTrigger asChild>
+              <button className="relative">
+                <ShoppingCart size={22} className="text-white" />
+                {totalItems > 0 && (
+                  <span className="absolute -top-1.5 -right-1.5 bg-red-600 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
+                    {totalItems}
+                  </span>
+                )}
+              </button>
+            </SheetTrigger>
+            <SheetContent side={dir === 'rtl' ? 'left' : 'right'} className="w-[85vw] sm:w-[350px] p-0">
+              <CartDrawer onClose={() => setCartOpen(false)} />
+            </SheetContent>
+          </Sheet>
+        </div>
+
+        {/* ===== DESKTOP LAYOUT (hidden md:flex) ===== */}
+        {/* Desktop: Logo (start side) + Menu */}
+        <div className="hidden md:flex items-center gap-6">
+          <Sheet open={drawerOpen} onOpenChange={setDrawerOpen}>
+            <SheetTrigger asChild>
+              <button 
+                onMouseEnter={() => setDrawerOpen(true)}
+                className="text-white hover:opacity-80 transition-opacity"
+              >
+                <PanelLeft size={24} />
+              </button>
+            </SheetTrigger>
+            <SheetContent side={dir === 'rtl' ? 'right' : 'left'} className="w-[85vw] sm:w-[350px] p-0">
+              <SideDrawer onClose={() => setDrawerOpen(false)} />
+            </SheetContent>
+          </Sheet>
+          <a href="/" className="group">
+            <img 
+              src="/logo.png" 
+              alt="Jass Collection" 
+              className="w-[150px] h-auto object-contain transition-transform duration-300 group-hover:scale-105 bg-transparent"
+            />
+          </a>
+        </div>
+
+        {/* Desktop: Search Bar + Cart */}
+        <div className="hidden md:flex items-center gap-4">
+          <form onSubmit={handleSearch} className="flex items-center bg-white/10 rounded-full overflow-hidden border border-white/20 hover:border-[#D4AF37]/50 transition-colors focus-within:border-[#D4AF37]">
+            <Input
+              placeholder={t('ابحث عن منتج...', 'Rechercher un produit...')}
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="border-0 bg-transparent text-white placeholder:text-white/50 w-56 h-10 focus-visible:ring-0 focus-visible:ring-offset-0"
+            />
+            <button
+              type="submit"
+              className="px-3 text-white/70 hover:text-[#D4AF37] transition-colors"
+            >
+              <Search size={18} />
             </button>
-          </SheetTrigger>
-          <SheetContent side={dir === 'rtl' ? 'left' : 'right'} className="w-[85vw] sm:w-[350px] p-0">
-            <CartDrawer onClose={() => setCartOpen(false)} />
-          </SheetContent>
-        </Sheet>
+          </form>
+
+          <Sheet open={cartOpen} onOpenChange={setCartOpen}>
+            <SheetTrigger asChild>
+              <button className="relative text-white hover:text-[#D4AF37] transition-colors">
+                <ShoppingCart size={24} />
+                {totalItems > 0 && (
+                  <span className="absolute -top-1.5 -right-1.5 bg-red-600 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
+                    {totalItems}
+                  </span>
+                )}
+              </button>
+            </SheetTrigger>
+            <SheetContent side={dir === 'rtl' ? 'left' : 'right'} className="w-[85vw] sm:w-[350px] p-0">
+              <CartDrawer onClose={() => setCartOpen(false)} />
+            </SheetContent>
+          </Sheet>
+        </div>
       </div>
 
-      {/* Search Bar */}
+      {/* Mobile Search Bar (dropdown) */}
       {searchOpen && (
-        <div className="absolute top-[5.5rem] md:top-[7rem] left-0 right-0 bg-white shadow-md p-3 z-50">
+        <div className="absolute top-[5.5rem] left-0 right-0 bg-white shadow-md p-3 z-50 md:hidden">
           <form onSubmit={handleSearch} className="flex gap-2">
             <Input
               placeholder={t('ابحث عن منتج...', 'Rechercher un produit...')}

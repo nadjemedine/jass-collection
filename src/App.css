@@ -47,10 +47,8 @@ button, a {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
 }
 
-/* Image loading placeholder */
-img {
-  background-color: #f3f4f6;
-}
+/* Image loading placeholder - background color removed to prevent issues with transparent images */
+
 
 /* Line clamp utility */
 .line-clamp-2 {

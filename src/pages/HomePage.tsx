@@ -5,6 +5,7 @@ import { client, queries } from '@/lib/sanity';
 import type { Product } from '@/types';
 import ProductCard from '@/components/ProductCard';
 import Header from '@/components/Header';
+import Features from '@/components/Features';
 import Footer from '@/components/Footer';
 import BottomNav from '@/components/BottomNav';
 import ProductStack from '@/components/ProductStack';
@@ -185,16 +186,21 @@ export default function HomePage() {
         {/* New Products Section */}
         {!searchQuery && newProducts.length > 0 && (
           <section className="px-4 py-6">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="flex-1 h-px bg-gray-200" />
-              <h2 className="text-lg font-semibold whitespace-nowrap flex items-center gap-1">
-                ✨ {t('جديد جاس كوليكشن', 'Nouveautés Jass Collection')} ✨
-              </h2>
-              <div className="flex-1 h-px bg-gray-200" />
+            <div className="flex flex-col items-center gap-1 mb-4">
+              <div className="flex items-center gap-3 w-full">
+                <div className="flex-1 h-px bg-gray-200" />
+                <h2 className="text-lg font-semibold whitespace-nowrap flex items-center gap-1">
+                  ✨ {t('جديد جاس كوليكشن', 'Nouveautés Jass Collection')} ✨
+                </h2>
+                <div className="flex-1 h-px bg-gray-200" />
+              </div>
+              <p className="text-sm text-gray-500">
+                {t('يتم دخول و خروج المنتجات بصفة دائمة', 'Les produits entrent et sortent en permanence')}
+              </p>
             </div>
-            <div className="flex overflow-x-auto gap-4 pb-4 px-1 no-scrollbar -mx-4 px-4 scroll-smooth">
+            <div className="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-4 scrollbar-hide">
               {newProducts.map((product, i) => (
-                <div key={product._id} className="w-[160px] sm:w-[200px] flex-shrink-0">
+                <div key={product._id} className="min-w-[180px] sm:min-w-[240px] md:min-w-[280px] snap-start">
                   <ProductCard product={product} index={i} />
                 </div>
               ))}
@@ -248,6 +254,7 @@ export default function HomePage() {
         )}
 
       </main>
+      <Features />
       <Footer />
 
       {/* Scroll to top button */}

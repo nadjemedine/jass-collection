@@ -6,6 +6,7 @@ import { useWishlist } from '@/context/WishlistContext';
 import { client, queries } from '@/lib/sanity';
 import type { Product } from '@/types';
 import Header from '@/components/Header';
+import Features from '@/components/Features';
 import Footer from '@/components/Footer';
 import BottomNav from '@/components/BottomNav';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -281,6 +282,7 @@ export default function ProductPage() {
         </motion.div>
         </div>
       </main>
+      <Features />
       <Footer />
       <BottomNav />
     </div>

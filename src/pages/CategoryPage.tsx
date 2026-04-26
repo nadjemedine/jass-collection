@@ -5,6 +5,7 @@ import { client, queries } from '@/lib/sanity';
 import type { Product, Category } from '@/types';
 import ProductCard from '@/components/ProductCard';
 import Header from '@/components/Header';
+import Features from '@/components/Features';
 import Footer from '@/components/Footer';
 import BottomNav from '@/components/BottomNav';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -133,6 +134,7 @@ export default function CategoryPage() {
           )}
         </div>
       </main>
+      <Features />
       <Footer />
       <BottomNav />
     </div>
